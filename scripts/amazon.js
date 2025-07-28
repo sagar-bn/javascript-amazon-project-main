@@ -1,6 +1,8 @@
+import {cart,addToCart} from '../data/cart.js';
+import {products} from '../data/products.js'
 let HTML='';
 products.forEach((products)=>{
- HTML += `       <div class="product-container ">
+ HTML += `<div class="product-container ">
           <div class="product-image-container">
             <img class="product-image"
               src="${products.image}">
@@ -54,46 +56,38 @@ products.forEach((products)=>{
 });
 document.querySelector('.js-products').innerHTML=HTML;
 
-
-let MatchingProduct;
-document.querySelectorAll('.js-add-to-cart')
-.forEach((button)=>{
-  button.addEventListener('click',()=>{
-    const productId = button.dataset.productsId; 
-   const select = document.querySelector(`.js-select-quantity-${productId}`);
-  const selectedQuantity=Number(select.value);
-   select.value=1;
- 
-
-
-   cart.forEach((item)=>{
-    if(productId === item.productId){
-      MatchingProduct= item;
-    }
-   });
-   if(MatchingProduct){
-    MatchingProduct.quantity += selectedQuantity;
-   }
-   else{
-     cart.push({
-    productId:productId ,
-    quantity : selectedQuantity
-     });}
-      let cartQuantity=0;
+function updateCartQuantity(){
+  let cartQuantity=0;
       cart.forEach((item)=>{
         cartQuantity += item.quantity;
       });
 
       document.querySelector('.js-cart-quantity').innerHTML=cartQuantity;
-      const added = document.querySelector(`.js-added-to-cart-${productId}`);
+}
+function addMessage(productId){
+  const added = document.querySelector(`.js-added-to-cart-${productId}`);
        added.style.opacity=1;
+
        setTimeout(()=>{
         added.style.opacity=0;
        },2000);
-
-
-      // console.log(added.innerHTML=` <img src="images/icons/checkmark.png">
+       // console.log(added.innerHTML=` <img src="images/icons/checkmark.png">
       //       Added`);
+
+}
+
+
+document.querySelectorAll('.js-add-to-cart')
+.forEach((button)=>{
+  button.addEventListener('click',()=>{
+    const productId = button.dataset.productsId; 
+      addToCart(productId);
+      
+      updateCartQuantity();
+     
+      addMessage(productId);
+
+      
 
   console.log(cart);
   });

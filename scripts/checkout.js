@@ -1,6 +1,7 @@
 import {cart, removefromCart} from '../data/cart.js';
 import {products} from '../data/products.js';
 import {currencyFormating} from './utils/utitility.js';
+//import {updateCartQuantity} from './amazon.js';
 let OrderSummary = '';
 
 
@@ -106,6 +107,8 @@ document.querySelectorAll('.link')
 
      const container = document.querySelector(`.js-cart-item-container-${productId}`);
      container.remove();
+
+   //  updateCartQuantity();
    })
 })
  

@@ -57,10 +57,10 @@ products.forEach((products)=>{
 });
 document.querySelector('.js-products').innerHTML=HTML;
 
-function updateCartQuantity(){
+export function updateCartQuantity(){
   let cartQuantity=0;
-      cart.forEach((item)=>{
-        cartQuantity += item.quantity;
+      cart.forEach((cartItem)=>{
+        cartQuantity += cartItem.quantity;
       });
 
       document.querySelector('.js-cart-quantity').innerHTML=cartQuantity;

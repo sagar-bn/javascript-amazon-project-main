@@ -4,48 +4,6 @@ import {currencyFormating} from './utils/utitility.js';
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 import { deliveryOptions } from '../data/deliveryOption.js';
 
-// First: Define the helper functions
-function attachDeleteListeners() {
-  document.querySelectorAll('.link')
-    .forEach((link) => {
-      link.addEventListener('click', () => {
-        const productId = link.dataset.deleteId;
-        removefromCart(productId);
-        updateCount();
-        const container = document.querySelector(`.js-cart-item-container-${productId}`);
-        if (container) container.remove();
-        saveToCart();
-        renderCart();
-      });
-    });
-}
-
-function attachUpdateListeners() {
-  document.querySelectorAll('.js-update')
-    .forEach((update) => {
-      update.addEventListener('click', () => {
-        const updateProductId = update.dataset.updateId;
-        update.outerHTML = `
-          <input class="input-${updateProductId}" type="text" style="width: 50px;">
-          <span class="saveG-${updateProductId} link-primary">Save</span>
-        `;
-        setTimeout(() => {
-          const saveG = document.querySelector(`.saveG-${updateProductId}`);
-          if (saveG) {
-            saveG.addEventListener('click', () => {
-              const inputBox = document.querySelector(`.input-${updateProductId}`);
-              const number = Number(inputBox.value);
-              updateQuantity(number, updateProductId);
-              saveToCart();
-              renderCart();
-            });
-          }
-        }, 0);
-      });
-    });
-}
-
-// Now: renderCart (which uses those functions)
 function renderCart() {
   let OrderSummary = '';
   cart.forEach((cartItem) => {
@@ -111,11 +69,9 @@ function renderCart() {
   });
 
   document.querySelector('.js-order-summary').innerHTML = OrderSummary;
-  attachDeleteListeners();
-  attachUpdateListeners();
-  attachDeliveryOptionListeners();
+ 
 
- }
+ 
  function DeliveryOptionHtml(MatchingProduct,cartItem){
     let HTML ='';
     deliveryOptions.forEach((deliveryOption)=>{
@@ -149,15 +105,54 @@ function renderCart() {
     
   }
 
-  function attachDeliveryOptionListeners() {
-  document.querySelectorAll('.js-delivery-option').forEach((element)=>{
+  document.querySelectorAll('.link')
+    .forEach((link) => {
+      link.addEventListener('click', () => {
+        const productId = link.dataset.deleteId;
+        removefromCart(productId);
+        updateCount();
+        const container = document.querySelector(`.js-cart-item-container-${productId}`);
+        if (container) container.remove();
+        saveToCart();
+        renderCart();
+      });
+    });
+
+
+
+  document.querySelectorAll('.js-update')
+    .forEach((update) => {
+      update.addEventListener('click', () => {
+        const updateProductId = update.dataset.updateId;
+        update.outerHTML = `
+          <input class="input-${updateProductId}" type="text" style="width: 50px;">
+          <span class="saveG-${updateProductId} link-primary">Save</span>
+        `;
+        setTimeout(() => {
+          const saveG = document.querySelector(`.saveG-${updateProductId}`);
+          if (saveG) {
+            saveG.addEventListener('click', () => {
+              const inputBox = document.querySelector(`.input-${updateProductId}`);
+              const number = Number(inputBox.value);
+              updateQuantity(number, updateProductId);
+              saveToCart();
+              renderCart();
+            });
+          }
+        }, 0);
+      });
+    });
+
+  
+  document.querySelectorAll('.js-delivery-option')
+   .forEach((element)=>{
     element.addEventListener('click',()=>{
       const {productId,deliveryOption} = element.dataset;
       updateDeliveryOption(productId,deliveryOption);
       renderCart();
     })
-  })
-}
+  });
+
 
 function updateCount() {
   let counts = saveToCart();
@@ -172,9 +167,10 @@ function updateQuantity(number, updateProductId) {
     }  
   });
 }
-
-renderCart();
 updateCount();
+}
+renderCart();
+
 
 
 

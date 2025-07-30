@@ -62,3 +62,12 @@ function countItem(){
   })
   return count;
 }
+export function updateDeliveryOption(productId,deliveryOption){
+  cart.forEach((cartItem)=>{
+     if(cartItem.productId===productId){
+      cartItem.deliveryOptionId= deliveryOption;
+      saveToCart();
+     }
+    
+  })
+}

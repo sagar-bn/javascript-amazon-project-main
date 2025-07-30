@@ -1,4 +1,4 @@
-import {cart, removefromCart, saveToCart} from '../data/cart.js';
+import {cart, removefromCart, saveToCart,updateDeliveryOption} from '../data/cart.js';
 import {products} from '../data/products.js';
 import {currencyFormating} from './utils/utitility.js';
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
@@ -113,6 +113,7 @@ function renderCart() {
   document.querySelector('.js-order-summary').innerHTML = OrderSummary;
   attachDeleteListeners();
   attachUpdateListeners();
+  attachDeliveryOptionListeners();
 
  }
  function DeliveryOptionHtml(MatchingProduct,cartItem){
@@ -127,7 +128,8 @@ function renderCart() {
     const priceCents = deliveryOption.priceCents === 0
                         ? ' FREE'
                         : ` ${currencyFormating(deliveryOption.priceCents)}`;
-     HTML += ` <div class="delivery-option">
+     HTML += ` <div class="delivery-option js-delivery-option" data-product-id="${MatchingProduct.id}"
+                 data-delivery-option="${deliveryOption.id}"">
                   <input type="radio"
                   ${ischecked ? 'checked' : ''}
                     class="delivery-option-input"
@@ -147,6 +149,16 @@ function renderCart() {
     
   }
 
+  function attachDeliveryOptionListeners() {
+  document.querySelectorAll('.js-delivery-option').forEach((element)=>{
+    element.addEventListener('click',()=>{
+      const {productId,deliveryOption} = element.dataset;
+      updateDeliveryOption(productId,deliveryOption);
+      renderCart();
+    })
+  })
+}
+
 function updateCount() {
   let counts = saveToCart();
   document.querySelector('.js-checkout-itemCount').innerHTML = `${counts} items`;
@@ -157,12 +169,11 @@ function updateQuantity(number, updateProductId) {
     if (cartItem.productId === updateProductId) {
       cartItem.quantity = number;
       
-    }
+    }  
   });
 }
 
 renderCart();
-
 updateCount();
 
 

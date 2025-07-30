@@ -1,27 +1,18 @@
 import {cart, removefromCart, saveToCart,updateDeliveryOption ,updateQuantity} from '../../data/cart.js';
-import {products} from '../../data/products.js';
+import {products,getProduct} from '../../data/products.js';
 import {currencyFormating} from '../utils/utitility.js';
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
-import { deliveryOptions } from '../../data/deliveryOption.js';
+import { deliveryOptions, getdeliveryOption } from '../../data/deliveryOption.js';
+import { renderpaymentSummary } from './PaymentSummary.js';
 
 export function renderOrderSummary() {
   let OrderSummary = '';
   cart.forEach((cartItem) => {
               const productId = cartItem.productId;
-              let MatchingProduct;
-
-              products.forEach((product) => {
-                if (product.id === productId) {
-                  MatchingProduct = product;
-                }
-              });
+              const MatchingProduct=getProduct(productId);
               const deliveryOptionId =cartItem.deliveryOptionId;
-              let deliveryOption;
-              deliveryOptions.forEach((option)=>{
-                  if(option.id===deliveryOptionId){
-                      deliveryOption = option; 
-                  }
-                 });
+              const deliveryOption = getdeliveryOption(deliveryOptionId);
+              
                 const now = dayjs();
                 const deliverdate = now.add(deliveryOption.delivaryDays,'days');
                 const dateString= deliverdate.format(
@@ -137,6 +128,7 @@ export function renderOrderSummary() {
               updateQuantity(number, updateProductId);
               saveToCart();
               renderOrderSummary();
+              renderpaymentSummary();
             });
           }
         }, 0);
@@ -150,11 +142,12 @@ export function renderOrderSummary() {
       const {productId,deliveryOption} = element.dataset;
       updateDeliveryOption(productId,deliveryOption);
       renderOrderSummary();
+      renderpaymentSummary();
     })
   });
 
-// update the itms count
-function updateCount() {
+// update the items count
+ function updateCount() {
   let counts = saveToCart();
   document.querySelector('.js-checkout-itemCount').innerHTML = `${counts} items`;
 }

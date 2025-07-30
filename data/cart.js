@@ -55,7 +55,7 @@ export function removefromCart(productId){
 
   saveToCart();
 };
-function countItem(){
+export function countItem(){
   let count=0;
   cart.forEach((cartItem)=>{
      count++;

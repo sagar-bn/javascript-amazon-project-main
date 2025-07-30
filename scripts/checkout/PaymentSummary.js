@@ -15,11 +15,10 @@ export function renderpaymentSummary(){
     productPriceCents += product.priceCents * cartItem.quantity;
     shippingCharge += deliveryOption.priceCents;
    });
-   console.log(productPriceCents);
-   console.log(shippingCharge);
- const totalBeforeTax= productPriceCents+shippingCharge;
- const taxTenPerCent = totalBeforeTax * 0.1;
- const finalTotal = totalBeforeTax + taxTenPerCent;
+
+  const totalBeforeTax= productPriceCents+shippingCharge;
+  const taxTenPerCent = totalBeforeTax * 0.1;
+  const finalTotal = totalBeforeTax + taxTenPerCent;
 
   Html += `
    <div class="payment-summary-title">

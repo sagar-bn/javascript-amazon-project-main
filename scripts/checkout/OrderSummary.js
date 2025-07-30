@@ -106,6 +106,7 @@ export function renderOrderSummary() {
         if (container) container.remove();
         saveToCart();
         renderOrderSummary();
+        renderpaymentSummary();
       });
     });
 

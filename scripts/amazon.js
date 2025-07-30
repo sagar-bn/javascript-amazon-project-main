@@ -54,8 +54,10 @@ products.forEach((products)=>{
         </div>
 `
 //console.log(`js-select-quantity-${products.id}`);
+
 });
 document.querySelector('.js-products').innerHTML=HTML;
+updateCartQuantity();
 
 export function updateCartQuantity(){
   let cartQuantity=0;

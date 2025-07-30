@@ -54,12 +54,12 @@ export function removefromCart(productId){
   cart= newCart;
 
   saveToCart();
-}
+};
 function countItem(){
   let count=0;
   cart.forEach((cartItem)=>{
      count++;
-  })
+  });
   return count;
 }
 export function updateDeliveryOption(productId,deliveryOption){
@@ -69,5 +69,14 @@ export function updateDeliveryOption(productId,deliveryOption){
       saveToCart();
      }
     
-  })
+  });
+}
+
+export function updateQuantity(number, updateProductId) {
+  cart.forEach((cartItem) => {
+    if (cartItem.productId === updateProductId) {
+      cartItem.quantity = number;
+      
+    }  
+  });
 }

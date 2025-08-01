@@ -1,0 +1,128 @@
+# Run tests against supported Node versions, and (except for pull requests)
+# against supported browsers.
+
+version: 2.1
+
+executors:
+  node20:
+    docker:
+      - image: cimg/node:20.0.0
+    working_directory: ~/workspace
+  node18:
+    docker:
+      - image: cimg/node:18.0.0
+    working_directory: ~/workspace
+
+jobs:
+  build:
+    parameters:
+      executor:
+        type: executor
+    executor: << parameters.executor >>
+    steps:
+      - checkout
+      - run:
+          name: Report Node and NPM versions
+          command: echo "Using Node $(node --version) and NPM $(npm --version)"
+      - run:
+          name: Install dependencies
+          command: npm install
+      - run:
+          name: Build
+          command: npm run build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  test_node: &test_node
+    parameters:
+      executor:
+        type: executor
+    executor: << parameters.executor >>
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run tests
+          command: npm test
+
+  test_parallel: &test_parallel
+    parameters:
+      executor:
+        type: executor
+    executor: << parameters.executor >>
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Run tests in parallel
+          command: npx grunt execSpecsInParallel
+
+  test_browsers: &test_browsers
+    executor: node18
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Install Sauce Connect
+          command: |
+            cd /tmp
+            curl https://saucelabs.com/downloads/sc-4.7.1-linux.tar.gz | tar zxf -
+            chmod +x sc-4.7.1-linux/bin/sc
+            mkdir ~/workspace/bin
+            cp sc-4.7.1-linux/bin/sc ~/workspace/bin
+            ~/workspace/bin/sc --version
+      - run:
+          name: Run tests
+          command: |
+            # Do everything in one step because Sauce Connect won't exit
+            # cleanly if we kill it from a different step than it started in.
+
+            export PATH=$PATH:$HOME/workspace/bin
+            export SAUCE_TUNNEL_IDENTIFIER=$CIRCLE_WORKFLOW_JOB_ID
+            scripts/start-sauce-connect sauce-pidfile
+            set +o errexit
+            scripts/run-all-browsers
+            exitcode=$?
+            set -o errexit
+            scripts/stop-sauce-connect $(cat sauce-pidfile)
+            exit $exitcode
+
+workflows:
+  version: 2
+
+  push:
+    jobs:
+      - build:
+          executor: node20
+          name: build_node_20
+      - build:
+          executor: node18
+          name: build_node_18
+      - test_node:
+          executor: node20
+          name: test_node_20
+          requires:
+            - build_node_20
+      - test_node:
+          executor: node18
+          name: test_node_18
+          requires:
+            - build_node_18
+      - test_parallel:
+          executor: node18
+          name: test_parallel_node_18
+          requires:
+            - build_node_18
+      - test_parallel:
+          executor: node20
+          name: test_parallel_node_20
+          requires:
+            - build_node_20
+      - test_browsers:
+          requires:
+             - build_node_18
+          filters:
+            branches:
+              ignore: /pull\/.*/ # Don't run on pull requests.

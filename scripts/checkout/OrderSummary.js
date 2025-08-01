@@ -105,7 +105,7 @@ export function renderOrderSummary() {
       link.addEventListener('click', () => {
         const productId = link.dataset.deleteId;
         removefromCart(productId);
-        //updateCount();
+        updateCount();
         const container = document.querySelector(`.js-cart-item-container-${productId}`);
         if (container) container.remove();
         saveToCart();
@@ -158,5 +158,5 @@ export function renderOrderSummary() {
 }
 
 
-//updateCount();
+updateCount();
 }

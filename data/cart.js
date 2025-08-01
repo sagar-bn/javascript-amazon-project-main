@@ -1,4 +1,9 @@
-export  let cart =JSON.parse(localStorage.getItem('cart'));
+export  let cart ;
+
+ loadFromStorage();
+
+export function loadFromStorage(){
+cart =JSON.parse(localStorage.getItem('cart'));
 if(!cart){
   cart =[
   {
@@ -13,6 +18,7 @@ if(!cart){
   }
 ];
 }
+}
 
 
 export function saveToCart(){
@@ -20,27 +26,56 @@ export function saveToCart(){
   return countItem();
 }
 
-export function addToCart(productId){
-    let MatchingProduct;
-    const select = document.querySelector(`.js-select-quantity-${productId}`);
-    const selectedQuantity=Number(select.value);
-    select.value=1;
-    cart.forEach((item)=>{
-    if(productId === item.productId){
-      MatchingProduct= item;
-    }
-   });
-   if(MatchingProduct){
-    MatchingProduct.quantity += selectedQuantity;
-   }
-   else{
-     cart.push({
-    productId:productId ,
-    quantity : selectedQuantity,
-    deliveryOptionId :'1'
-     });}
+// export function addToCart(productId){
+//     let MatchingProduct;
+//     const select = document.querySelector(`.js-select-quantity-${productId}`);
+//     const selectedQuantity=Number(select.value);
+//     select.value=1;
+//     cart.forEach((item)=>{
+//     if(productId === item.productId){
+//       MatchingProduct= item;
+//     }
+//    });
+//    if(MatchingProduct){
+//     MatchingProduct.quantity += selectedQuantity;
+//    }
+//    else{
+//      cart.push({
+//     productId:productId ,
+//     quantity : selectedQuantity,
+//     deliveryOptionId :'1'
+//      });}
 
-     saveToCart();
+//      saveToCart();
+// }
+
+export function addToCart(productId, quantity = null) {
+  let selectedQuantity = quantity;
+
+  if (selectedQuantity === null) {
+    const select = document.querySelector(`.js-select-quantity-${productId}`);
+    selectedQuantity = Number(select?.value || 1);
+    if (select) select.value = 1;
+  }
+
+  let MatchingProduct;
+  cart.forEach((item) => {
+    if (productId === item.productId) {
+      MatchingProduct = item;
+    }
+  });
+
+  if (MatchingProduct) {
+    MatchingProduct.quantity += selectedQuantity;
+  } else {
+    cart.push({
+      productId,
+      quantity: selectedQuantity,
+      deliveryOptionId: '1'
+    });
+  }
+
+  saveToCart();
 }
 
 

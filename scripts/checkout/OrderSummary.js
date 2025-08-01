@@ -1,5 +1,5 @@
 import {cart, removefromCart, saveToCart,updateDeliveryOption ,updateQuantity} from '../../data/cart.js';
-import {products,getProduct} from '../../data/products.js';
+import {getProduct} from '../../data/products.js';
 import {currencyFormating} from '../utils/utitility.js';
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 import { deliveryOptions, getdeliveryOption } from '../../data/deliveryOption.js';
@@ -20,7 +20,9 @@ export function renderOrderSummary() {
                   );
 
 
-              OrderSummary += ` <div class="cart-item-container js-cart-item-container-${MatchingProduct.id}">
+              OrderSummary += ` <div class="cart-item-container 
+                     js-cart-item-container
+                     js-cart-item-container-${MatchingProduct.id}">
                       <div class="delivery-date">
                         Delivery date: ${dateString}
                       </div>
@@ -36,7 +38,8 @@ export function renderOrderSummary() {
                           <div class="product-price">
                           $${currencyFormating(MatchingProduct.priceCents)}
                           </div>
-                          <div class="product-quantity">
+                          <div class="product-quantity
+                          js-product-quantity-${cartItem.productId}">
                             <span>
                               Quantity: <span class="quantity-label">${cartItem.quantity}</span>
                             </span>
@@ -44,7 +47,8 @@ export function renderOrderSummary() {
                               Update
                             </span>
                             <!--  <span class="save-area"></span> -->
-                            <span class="delete-quantity-link link-primary link" 
+                            <span class="delete-quantity-link link-primary link
+                             js-test-delete-${MatchingProduct.id} " 
                             data-delete-id="${MatchingProduct.id}">
                               Delete
                             </span>
@@ -101,7 +105,7 @@ export function renderOrderSummary() {
       link.addEventListener('click', () => {
         const productId = link.dataset.deleteId;
         removefromCart(productId);
-        updateCount();
+        //updateCount();
         const container = document.querySelector(`.js-cart-item-container-${productId}`);
         if (container) container.remove();
         saveToCart();
@@ -154,5 +158,5 @@ export function renderOrderSummary() {
 }
 
 
-updateCount();
+//updateCount();
 }

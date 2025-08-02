@@ -1,8 +1,12 @@
 class Cart{
 
 
-   cartItem = undefined;
-   localStorageKey = undefined;
+   cartItem ;
+   localStorageKey ;
+   constructor(localStorageKey){
+    this.localStorageKey= localStorageKey;
+    this.loadFromStorage();
+   }
 
   loadFromStorage(){
   this.cartItem =JSON.parse(localStorage.getItem(this.localStorageKey));
@@ -113,15 +117,13 @@ removefromCart(productId){
   
 }
 
-const cart =new Cart();
-cart.localStorageKey='cart-oop';
+const cart =new Cart('cart-oop');
 
-const bcart= new Cart();
-bcart.localStorageKey='cart-b';
 
-cart.loadFromStorage();
-// cart.addToCart('3fdfe8d6-9a15-4979-b459-585b0d0545b9');
-bcart.loadFromStorage();
+const bcart= new Cart('cart-b');
+
+//every time we create object constructor is called
+
 
 console.log(cart);
 console.log(bcart);

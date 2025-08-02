@@ -1,15 +1,14 @@
 class Cart{
 
-
    cartItem ;
-   localStorageKey ;
+   #localStorageKey ;
    constructor(localStorageKey){
-    this.localStorageKey= localStorageKey;
-    this.loadFromStorage();
+    this.#localStorageKey= localStorageKey;
+    this.#loadFromStorage();
    }
 
-  loadFromStorage(){
-  this.cartItem =JSON.parse(localStorage.getItem(this.localStorageKey));
+  #loadFromStorage(){
+  this.cartItem =JSON.parse(localStorage.getItem(this.#localStorageKey));
   if(!this.cartItem ){
     this.cartItem =[
     {
@@ -29,7 +28,7 @@ class Cart{
   
   
   saveToCart(){
-    localStorage.setItem(this.localStorageKey,JSON.stringify(this.cartItem ));
+    localStorage.setItem(this.#localStorageKey,JSON.stringify(this.cartItem ));
     return this.countItem();
   } 
   
@@ -102,7 +101,6 @@ removefromCart(productId){
       
   }
   
-  
  updateQuantity(number, updateProductId) {
    this.cartItem .forEach((cartItem) => {
       if (cartItem.productId === updateProductId) {
@@ -113,8 +111,6 @@ removefromCart(productId){
   }
 
 
-
-  
 }
 
 const cart =new Cart('cart-oop');
@@ -124,7 +120,7 @@ const bcart= new Cart('cart-b');
 
 //every time we create object constructor is called
 
-
+// not possible change private variable directly from outside the class cart.#localStorageKey='cart';
 console.log(cart);
 console.log(bcart);
 

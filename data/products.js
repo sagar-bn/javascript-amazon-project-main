@@ -52,10 +52,20 @@ class Clothing extends Product{
     this.sizeChartLink = ProductDetails.sizeChartLink;
   }
   getExtenalHtml(){
-    return `<a href="images/clothing-size-chart.png" target="_blank">size</a>`;
+    return `<a href="${this.sizeChartLink}" target="_blank">size</a>`;
   }
+}
 
-  
+class Appliances extends Product{
+  keywords;
+  constructor(ProductDetails){
+    super(ProductDetails);
+    this.keywords=ProductDetails.keywords;
+  }
+  getExtenalHtml(){
+    return `<p><a href="images/appliance-instructions.png" target="_blank">instruction</a></p>
+              <a href="images/appliance-warranty.png" target="_blank">warranty</a>`
+  }
 }
 
 
@@ -719,9 +729,22 @@ export const products = [
     ]
   }
 ].map((ProductDetails)=>{
+  let appliance=false;
   if(ProductDetails.type === 'clothing'){
     return new Clothing(ProductDetails);
   }
+  ProductDetails.keywords.forEach((productType)=>{ 
+    if(productType === 'appliances'){
+    appliance=true;
+  }
+});
+
+    if(appliance){
+      return new Appliances(ProductDetails);
+    }
+    
+  
   return new Product(ProductDetails);
 });
 
+console.log(products);

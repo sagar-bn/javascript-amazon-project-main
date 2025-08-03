@@ -129,6 +129,13 @@
 .product-spacer {
   flex: 1;
 }
+.appliance-links {
+  font-family: Arial, sans-serif;
+  margin-top: 10px;
+  text-decoration: none;
+  color: #0077cc;
+  margin-right: 10px;
+}
 
 .added-to-cart {
   color: rgb(6, 125, 98);

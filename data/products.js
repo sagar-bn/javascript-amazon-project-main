@@ -52,7 +52,7 @@ class Clothing extends Product{
     this.sizeChartLink = ProductDetails.sizeChartLink;
   }
   getExtenalHtml(){
-    return `<a href="${this.sizeChartLink}" target="_blank">size</a>`;
+    return `<a  href="${this.sizeChartLink}" target="_blank">Size</a>`;
   }
 }
 
@@ -63,8 +63,10 @@ class Appliances extends Product{
     this.keywords=ProductDetails.keywords;
   }
   getExtenalHtml(){
-    return `<p><a href="images/appliance-instructions.png" target="_blank">instruction</a></p>
-              <a href="images/appliance-warranty.png" target="_blank">warranty</a>`
+    return `<p>
+              <a href="images/appliance-instructions.png" target="_blank">Instruction</a> <br>
+              <a href="images/appliance-warranty.png" target="_blank">Warranty</a>
+            </p>`
   }
 }
 

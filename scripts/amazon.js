@@ -39,8 +39,10 @@ products.forEach((products)=>{
               <option value="10">10</option>
             </select>
           </div>
-         
-          ${products.getExtenalHtml()}
+         <div class="appliance-links">
+             ${products.getExtenalHtml()}
+             </div>
+      
           <div class="product-spacer"></div>
 
           <div class="added-to-cart js-added-to-cart-${products.id}">

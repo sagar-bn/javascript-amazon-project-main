@@ -35,8 +35,27 @@ class Product{
     getRatingCount(){
        return `${this.rating.count}`;
     }
-
+   getExtenalHtml(){
+    return ` `;
+  }
  
+}
+
+class Clothing extends Product{
+  
+  type;
+  sizeChartLink;
+
+  constructor(ProductDetails){
+    super(ProductDetails);
+    this.type=ProductDetails.type;
+    this.sizeChartLink = ProductDetails.sizeChartLink;
+  }
+  getExtenalHtml(){
+    return `<a href="images/clothing-size-chart.png" target="_blank">size</a>`;
+  }
+
+  
 }
 
 
@@ -700,5 +719,9 @@ export const products = [
     ]
   }
 ].map((ProductDetails)=>{
+  if(ProductDetails.type === 'clothing'){
+    return new Clothing(ProductDetails);
+  }
   return new Product(ProductDetails);
 });
+

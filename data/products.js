@@ -778,5 +778,3 @@ xhr.send();
   
 //   return new Product(ProductDetails);
 // });
-
-console.log(products);

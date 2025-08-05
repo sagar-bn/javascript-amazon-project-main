@@ -6,6 +6,33 @@ import { loadCart } from '../data/cart.js';
 //import  '../data/cart-class.js';
 //import '../backend/backend.js';
 
+async function loadPages(){
+
+  await loadProductsFetch();
+  //async works with promise loadProduct do not return promise so creating a promie
+   await new Promise((resolve)=>{
+    loadCart(()=>{
+     resolve();
+    });
+  })
+
+  renderOrderSummary();
+  renderpaymentSummary();
+
+
+  /*const value = await new Promise((resolve)=>{
+    loadCart(()=>{
+     resolve('resolved');
+    });
+  })
+  console.log(value); */
+
+
+}
+loadPages();
+
+/*
+
 Promise.all([
  loadProductsFetch()
  ,
@@ -20,6 +47,7 @@ new Promise((resolve)=>{
   renderOrderSummary();
   renderpaymentSummary();
 });
+*/
 
 
 

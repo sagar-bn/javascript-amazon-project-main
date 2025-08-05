@@ -71,6 +71,37 @@ class Appliances extends Product{
 }
 
 export let products =[];
+
+export function loadProductsFetch(){
+  const promise =fetch(
+    'https://supersimplebackend.dev/products'
+  ).then((response)=>{
+    return response.json();
+  }).then((ProductDetails)=>{
+    products = ProductDetails.map((ProductDetails)=>{
+        let appliance=false;
+        if(ProductDetails.type === 'clothing'){
+          return new Clothing(ProductDetails);
+        }
+        ProductDetails.keywords.forEach((productType)=>{ 
+          if(productType === 'appliances'){
+          appliance=true;
+        }
+      });
+          if(appliance){
+            return new Appliances(ProductDetails);
+          }
+                  
+        return new Product(ProductDetails);
+
+  });
+  console.log(products);
+ 
+  })
+   return promise;
+   
+}
+
 export function loadProducts(fun){
 const xhr = new XMLHttpRequest();
 
@@ -92,6 +123,7 @@ xhr.addEventListener('load',()=>{
         return new Product(ProductDetails);
 
   });
+  console.log('products loaded');
   fun();
 })
 

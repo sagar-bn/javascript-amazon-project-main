@@ -7,7 +7,25 @@ import { loadCart } from '../data/cart.js';
 //import '../backend/backend.js';
 
 async function loadPages(){
+try{
+  await loadProductsFetch();
+   await new Promise((resolve)=>{
+    loadCart(()=>{
+     resolve();
+    });
+  })
+}
+catch(error){
+  console.log('error occured please try again.');
+}
 
+  renderOrderSummary();
+  renderpaymentSummary();
+}
+loadPages();
+
+/*
+async function loadPages(){
   await loadProductsFetch();
   //async works with promise loadProduct do not return promise so creating a promie
    await new Promise((resolve)=>{
@@ -20,17 +38,18 @@ async function loadPages(){
   renderpaymentSummary();
 
 
-  /*const value = await new Promise((resolve)=>{
+  const value = await new Promise((resolve)=>{
     loadCart(()=>{
      resolve('resolved');
     });
   })
-  console.log(value); */
+  console.log(value); 
 
 
 }
 loadPages();
 
+*/
 /*
 
 Promise.all([

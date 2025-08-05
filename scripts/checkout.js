@@ -7,17 +7,17 @@ import { loadCart } from '../data/cart.js';
 //import '../backend/backend.js';
 
 async function loadPages(){
+
 try{
- // throw 'error'
   await loadProductsFetch();
- // throw 'error';
-   await new Promise((resolve,reject)=>{
+
+   await new Promise((resolve)=>{
     loadCart(()=>{
-      reject();
-     //resolve();
+     resolve();
     });
   })
 }
+
 catch(error){
   console.log('error occured please try again.');
 }
@@ -26,6 +26,28 @@ catch(error){
   renderpaymentSummary();
 }
 loadPages();
+
+
+// async function loadPages(){
+// try{
+//  // throw 'error'
+//   await loadProductsFetch();
+//  // throw 'error';
+//    await new Promise((resolve,reject)=>{
+//     loadCart(()=>{
+//       reject();
+//      //resolve();
+//     });
+//   })
+// }
+// catch(error){
+//   console.log('error occured please try again.');
+// }
+
+//   renderOrderSummary();
+//   renderpaymentSummary();
+// }
+// loadPages();
 
 /*
 async function loadPages(){

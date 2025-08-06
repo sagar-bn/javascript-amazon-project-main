@@ -88,5 +88,30 @@
         </div>
       </div>
     </div>
+    <script type="module">
+import { orders } from './data/order.js';
+import { getProduct, loadProductsFetch } from './data/products.js';
+import { dateformat } from './scripts/utils/dateformate.js';
+  loadProductsFetch().then(() => {
+  rendertrack();
+  });
+function rendertrack(){
+  const params = new URLSearchParams(window.location.search);
+  const orderId = params.get('orderId');
+  const productId = params.get('productId');
+
+  const order = orders.find(order => order.id === orderId);
+  const productDetails = order.products.find(p => p.productId === productId);
+  const product = getProduct(productId);
+
+  document.querySelector('.delivery-date').textContent =
+    `Arriving on ${dateformat(productDetails.estimatedDeliveryTime)}`;
+
+  document.querySelectorAll('.product-info')[0].textContent = product.name;
+  document.querySelectorAll('.product-info')[1].textContent = `Quantity: ${productDetails.quantity}`;
+  document.querySelector('.product-image').src = product.image;
+}
+</script>
+
   </body>
 </html>

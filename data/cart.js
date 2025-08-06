@@ -106,3 +106,7 @@ xhr.addEventListener('load',()=>{
 xhr.open('GET','https://supersimplebackend.dev/cart');
 xhr.send();
 }
+export function clearCart() {
+  cart.length = 0;
+  localStorage.removeItem('cart');
+}

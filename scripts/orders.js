@@ -6,20 +6,20 @@ import { loadProductsFetch } from '../data/products.js';
 
 loadProductsFetch().then(() => {
   renderOrderPlaced();
-  });
-function renderOrderPlaced(){
- let Html='';
-orders.forEach((order)=>{
-    let productHtml='';
-  order.products.forEach((product)=>{
-    const productId = product.productId;
-    let MatchingProduct;
+});
+function renderOrderPlaced() {
+  let Html = '';
+  orders.forEach((order) => {
+    let productHtml = '';
+    order.products.forEach((product) => {
+      const productId = product.productId;
+      let MatchingProduct;
 
-  MatchingProduct=getProduct(productId);
+      MatchingProduct = getProduct(productId);
 
-   
-    
-   productHtml +=`
+
+
+      productHtml += `
         <div class="product-image-container">
               <img src="${MatchingProduct.image}">
             </div>
@@ -41,18 +41,18 @@ orders.forEach((order)=>{
             </div>
 
             <div class="product-actions">
-              <a href="tracking.html">
-                <button class="track-package-button button-secondary">
-                  Track package
-                </button>
-              </a>
+              <a href="tracking.html?orderId=${order.id}&productId=${productId}">
+  <button class="track-package-button button-secondary">
+    Track package
+  </button>
+</a>
           </div>
    `;
 
 
-  })
- 
-  Html +=`
+    })
+
+    Html += `
    <div class="order-container">
           
           <div class="order-header">
@@ -83,7 +83,7 @@ orders.forEach((order)=>{
 
 
   `;
- 
-})
- document.querySelector('.js-placed-orders').innerHTML=Html;
+
+  })
+  document.querySelector('.js-placed-orders').innerHTML = Html;
 }
